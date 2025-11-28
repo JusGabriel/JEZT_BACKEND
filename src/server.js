@@ -54,23 +54,23 @@ app.get('/',(req,res)=>{
 })
 
 // Rutas para mensajes
-app.use("/api", routerWhats);
+app.use(routerWhats);
 
 
 //Rutas para administradores
-app.use('/api',routerAdministrador)
+app.use(routerAdministrador)
 
 // Rutas para estudiantes
-app.use('/api',routerEstudiante)
+app.use(routerEstudiante)
 
 // Rutas para pasantes
-app.use('/api',routerPasante)
+app.use(routerPasante)
 
 // Rutas para conversaciones
-app.use('/api', conversacionesRoutes);
+app.use(conversacionesRoutes);
 
 // Rutas para quejas o sugerencias
-app.use('/api', feedbackRoutes);
+app.use(feedbackRoutes);
 
 
 
