@@ -27,6 +27,7 @@
     "nodemailer": "^6.10.0",
     
     "qrcode": "^1.5.4",
+    "resend": "^6.5.2",
     "socket.io": "^4.8.1",
     "stripe": "^17.7.0",
     "whatsapp-web.js": "^1.34.1"
