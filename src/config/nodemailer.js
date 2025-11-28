@@ -3,7 +3,6 @@ import dotenv from 'dotenv'
 import path from 'path'
 import { fileURLToPath } from 'url'
 
-
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
@@ -11,18 +10,16 @@ dotenv.config()
 
 
 let transporter = nodemailer.createTransport({
-    service: 'gmail',
-    host: process.env.HOST_MAILTRAP,
-    port: process.env.PORT_MAILTRAP,
+    service: "gmail",
     auth: {
-        user: process.env.USER_MAILTRAP,
-        pass: process.env.PASS_MAILTRAP,
+        user: process.env.USER_GMAIL,   
+        pass: process.env.PASS_GMAIL    
     }
-});
+})
 
 const sendMailToRegister = (userMail, token) => {
     let mailOptions = {
-        from: 'jezt.studio@gmail.com',
+        from: process.env.USER_GMAIL,
         to: userMail,
         subject: "Bienvenido a Jezt - Confirma tu cuenta",
         html: `
@@ -46,7 +43,7 @@ const sendMailToRegister = (userMail, token) => {
             {
                 filename: 'logo.jpg',
                 path: path.join(__dirname, '../config/images/logo.jpg'),
-                cid: 'logo' 
+                cid: 'logo'
             }
         ]
     }
@@ -60,9 +57,9 @@ const sendMailToRegister = (userMail, token) => {
     })
 }
 
-const sendMailToRecoveryPassword = async(userMail, token) => {
+const sendMailToRecoveryPassword = async (userMail, token) => {
     let info = await transporter.sendMail({
-        from: 'jezt.studio@gmail.com',
+        from: process.env.USER_GMAIL,
         to: userMail,
         subject: "Correo para reestablecer tu contraseña",
         html: `
@@ -90,12 +87,13 @@ const sendMailToRecoveryPassword = async(userMail, token) => {
             }
         ]
     })
-    console.log("Mensaje enviado satisfactoriamente: ", info.messageId)
+
+    console.log("Mensaje enviado satisfactoriamente:", info.messageId)
 }
 
-const sendMailToRecoveryPasswordAdmin = async(userMail, token) => {
+const sendMailToRecoveryPasswordAdmin = async (userMail, token) => {
     let info = await transporter.sendMail({
-        from: 'jezt.studio@gmail.com',
+        from: process.env.USER_GMAIL,
         to: userMail,
         subject: "Correo para reestablecer tu contraseña",
         html: `
@@ -123,12 +121,12 @@ const sendMailToRecoveryPasswordAdmin = async(userMail, token) => {
             }
         ]
     })
-    console.log("Mensaje enviado satisfactoriamente: ", info.messageId)
+    console.log("Mensaje enviado satisfactoriamente:", info.messageId)
 }
 
-const sendMailToRecoveryPasswordPasante = async(userMail, token) => {
+const sendMailToRecoveryPasswordPasante = async (userMail, token) => {
     let info = await transporter.sendMail({
-        from: 'jezt.studio@gmail.com',
+        from: process.env.USER_GMAIL,
         to: userMail,
         subject: "Correo para reestablecer tu contraseña",
         html: `
@@ -156,52 +154,47 @@ const sendMailToRecoveryPasswordPasante = async(userMail, token) => {
             }
         ]
     })
-    console.log("Mensaje enviado satisfactoriamente: ", info.messageId)
+    console.log("Mensaje enviado satisfactoriamente:", info.messageId)
 }
 
-const sendMailToOwner =  async (userMail, password) => {
-
+const sendMailToOwner = async (userMail, password) => {
     let info = await transporter.sendMail({
-    from: 'jezt.studio@gmail.com',
-    to: userMail,
-    subject: "Correo de contraseña",
-    html: `
+        from: process.env.USER_GMAIL,
+        to: userMail,
+        subject: "Correo de contraseña",
+        html: `
         <div style="font-family: Arial, sans-serif; background-color: #121212; color: #ffffff; padding: 30px; border-radius: 10px;">
             <div style="text-align: center;">
-            <img src="cid:logo" alt="Jezt Studio Logo" style="width: 100px; margin-bottom: 20px;" />
-            <h1 style="color: #a0a0a0;"> Contraseña</h1>
-            <p style="font-size: 16px;">Bienvenido a Jezt, estas son tus credenciales de acceso:</p>
-            <p><strong>Contraseña:</strong> ${password}</p>
-            <a href="${process.env.FRONTEND_URL}login" 
-                    style="display: inline-block; padding: 12px 25px; margin-top: 20px; font-size: 16px; background-color: #4b4b4b; color: #ffffff; text-decoration: none; border-radius: 5px;">
-                    Iniciar sesión
-            </a>
+                <img src="cid:logo" alt="Jezt Studio Logo" style="width: 100px; margin-bottom: 20px;" />
+                <h1 style="color: #a0a0a0;"> Contraseña</h1>
+                <p style="font-size: 16px;">Bienvenido a Jezt, estas son tus credenciales de acceso:</p>
+                <p><strong>Contraseña:</strong> ${password}</p>
+                <a href="${process.env.FRONTEND_URL}login" 
+                        style="display: inline-block; padding: 12px 25px; margin-top: 20px; font-size: 16px; background-color: #4b4b4b; color: #ffffff; text-decoration: none; border-radius: 5px;">
+                        Iniciar sesión
+                </a>
             </div>
             <hr style="margin: 30px 0; border: 0; border-top: 1px solid #333;">
             <footer style="text-align: center; font-size: 14px; color: #aaaaaa;">
                 El equipo de Jezt Studio recuperando la clave.
             </footer>
         </div>
-    `,
-    attachments: [
+        `,
+        attachments: [
             {
                 filename: 'logo.jpg',
                 path: path.join(__dirname, '../config/images/logo.jpg'),
                 cid: 'logo'
             }
         ]
-});
-
+    })
 }
 
-
-
-
-export
-{
+export {
     sendMailToRegister,
     sendMailToRecoveryPassword,
     sendMailToRecoveryPasswordAdmin,
     sendMailToRecoveryPasswordPasante,
     sendMailToOwner
 }
+
