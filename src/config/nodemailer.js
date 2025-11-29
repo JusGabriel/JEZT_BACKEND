@@ -54,7 +54,7 @@ export const sendMailToRegister = (userMail, token) => {
             <img src="cid:logo" style="width: 120px; margin-bottom: 20px;" />
             <h1 style="color: #a0a0a0;">Bienvenido a Jezt</h1>
             <p style="font-size: 16px;">Has sido elegido para unirte a la experiencia JEZT.</p>
-            <a href="${process.env.FRONTEND_URL}confirm/${token}"
+            <a href="${process.env.FRONTEND_URL}/confirm/${token}"
                 style="display:inline-block;padding:12px 25px;margin-top:20px;font-size:16px;background-color:#4b4b4b;color:#fff;text-decoration:none;border-radius:5px;">
                 Confirmar Cuenta
             </a>
@@ -79,7 +79,7 @@ export const sendMailToRecoveryPassword = (userMail, token) => {
             <img src="cid:logo" style="width: 100px; margin-bottom: 20px;" />
             <h1 style="color: #a0a0a0;">Reestablecer contraseña</h1>
             <p style="font-size: 16px;">Haz clic en el botón para restablecer tu contraseña:</p>
-            <a href="${process.env.FRONTEND_URL}reset/${token}"
+            <a href="${process.env.FRONTEND_URL}/reset/${token}"
                 style="display:inline-block;padding:12px 25px;margin-top:20px;font-size:16px;background-color:#4b4b4b;color:#fff;text-decoration:none;border-radius:5px;">
                 Restablecer Contraseña
             </a>
@@ -102,7 +102,7 @@ export const sendMailToRecoveryPasswordAdmin = (userMail, token) => {
             <img src="cid:logo" style="width: 100px; margin-bottom: 20px;" />
             <h1 style="color: #a0a0a0;">Reestablecer contraseña (Admin)</h1>
             <p style="font-size: 16px;">Haz clic para restablecer tu contraseña:</p>
-            <a href="${process.env.FRONTEND_URL}reset-admin/${token}"
+            <a href="${process.env.FRONTEND_URL}/reset-admin/${token}"
                 style="display:inline-block;padding:12px 25px;margin-top:20px;font-size:16px;background-color:#4b4b4b;color:#fff;text-decoration:none;border-radius:5px;">
                 Restablecer Contraseña
             </a>
@@ -125,7 +125,7 @@ export const sendMailToRecoveryPasswordPasante = (userMail, token) => {
             <img src="cid:logo" style="width: 100px; margin-bottom: 20px;" />
             <h1 style="color: #a0a0a0;">Reestablecer contraseña (Pasante)</h1>
             <p style="font-size: 16px;">Haz clic para restablecer tu contraseña:</p>
-            <a href="${process.env.FRONTEND_URL}reset-pasante/${token}"
+            <a href="${process.env.FRONTEND_URL}/reset-pasante/${token}"
                 style="display:inline-block;padding:12px 25px;margin-top:20px;font-size:16px;background-color:#4b4b4b;color:#fff;text-decoration:none;border-radius:5px;">
                 Restablecer Contraseña
             </a>
@@ -149,7 +149,7 @@ export const sendMailToOwner = (userMail, password) => {
             <h1 style="color: #a0a0a0;">Bienvenido Owner</h1>
             <p style="font-size: 16px;">Estas son tus credenciales:</p>
             <p><strong>Contraseña:</strong> ${password}</p>
-            <a href="${process.env.FRONTEND_URL}login"
+            <a href="${process.env.FRONTEND_URL}/login"
                 style="display:inline-block;padding:12px 25px;margin-top:20px;font-size:16px;background-color:#4b4b4b;color:#fff;text-decoration:none;border-radius:5px;">
                 Iniciar Sesión
             </a>
@@ -160,5 +160,6 @@ export const sendMailToOwner = (userMail, password) => {
     `;
     return sendEmail(userMail, "Credenciales de acceso", html);
 };
+
 
 
