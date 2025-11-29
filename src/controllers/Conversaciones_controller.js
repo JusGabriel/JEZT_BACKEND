@@ -68,7 +68,7 @@ export const enviarPregunta = async (req, res) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    console.log(`🔍 Enviando pregunta: "${question}" - Rol: ${tipoUsuario}`);
+    console.log(` Enviando pregunta: "${question}" - Rol: ${tipoUsuario}`);
 
     const conversacion = await Conversacion.findById(id);
     if (!conversacion) {
@@ -79,7 +79,7 @@ export const enviarPregunta = async (req, res) => {
     conversacion.pregunta.push(question);
     await conversacion.save();
 
-    // ✅ CONFIGURAR STREAMING PARA EL FRONTEND
+    //  CONFIGURAR STREAMING PARA EL FRONTEND
     res.writeHead(200, {
       'Content-Type': 'text/plain; charset=utf-8',
       'Cache-Control': 'no-cache',
@@ -90,7 +90,7 @@ export const enviarPregunta = async (req, res) => {
     try {
       console.log(`🔄 Llamando a Python: ${PYTHON_BACKEND_URL}/api/chat`);
       
-      // ✅ LLAMAR A PYTHON CON STREAMING
+      //  LLAMAR A PYTHON CON STREAMING
       const pythonResponse = await fetch(`${PYTHON_BACKEND_URL}/api/chat`, {
         method: 'POST',
         headers: {
@@ -131,7 +131,7 @@ export const enviarPregunta = async (req, res) => {
               const parsed = JSON.parse(data);
               console.log("📦 Datos de Python:", parsed);
 
-              // ✅ REENVIAR STREAM AL FRONTEND
+              //  REENVIAR STREAM AL FRONTEND
               if (parsed.etapa === 'completado') {
                 respuestaFinal = parsed.respuesta;
                 
@@ -145,7 +145,7 @@ export const enviarPregunta = async (req, res) => {
                   id_respuesta_python: parsed.id_respuesta_python || null,
                   calificacion_actual: parsed.calificacion_actual || 0,
                   necesita_calificacion: parsed.necesita_calificacion || false
-                  // ✅ ELIMINADO: puede_reportar
+                  //  ELIMINADO: puede_reportar
                 })}\n\n`);
                 
                 // Guardar respuesta en MongoDB
@@ -173,7 +173,7 @@ export const enviarPregunta = async (req, res) => {
     } catch (error) {
       console.error("❌ Error en comunicación con Python:", error);
       
-      // ✅ ENVIAR RESPUESTA DE FALLBACK SI PYTHON FALLA
+      //  ENVIAR RESPUESTA DE FALLBACK SI PYTHON FALLA
       const respuestaFallback = "Lo siento, el servicio de IA no está disponible en este momento. Por favor intenta más tarde.";
       
       res.write(`data: ${JSON.stringify({
@@ -185,7 +185,7 @@ export const enviarPregunta = async (req, res) => {
         id_respuesta_python: null,
         calificacion_actual: 0,
         necesita_calificacion: false
-        // ✅ ELIMINADO: puede_reportar
+        //  ELIMINADO: puede_reportar
       })}\n\n`);
       
       // Guardar respuesta de fallback
@@ -196,7 +196,7 @@ export const enviarPregunta = async (req, res) => {
     res.end();
 
   } catch (error) {
-    console.error("💥 ERROR en enviarPregunta:", error);
+    console.error(" ERROR en enviarPregunta:", error);
     
     // Enviar error como streaming
     res.write(`data: ${JSON.stringify({
@@ -218,7 +218,7 @@ export const calificarRespuesta = async (req, res) => {
       });
     }
 
-    // ✅ VERIFICAR AUTENTICACIÓN
+    //  VERIFICAR AUTENTICACIÓN
     let usuario = null;
     let tipoUsuario = "";
     if (req.administradorBDD) {
@@ -234,7 +234,7 @@ export const calificarRespuesta = async (req, res) => {
       return res.status(401).json({ error: "Usuario no autenticado" });
     }
 
-    console.log(`⭐ Calificando respuesta ${id_respuesta_python} con ${calificacion} estrellas`);
+    console.log(` Calificando respuesta ${id_respuesta_python} con ${calificacion} estrellas`);
 
     // 🔍 OBTENER ÚLTIMA PREGUNTA Y RESPUESTA DE LA CONVERSACIÓN
     let ultima_pregunta = null;
@@ -245,12 +245,12 @@ export const calificarRespuesta = async (req, res) => {
       if (conversacion && conversacion.pregunta.length > 0 && conversacion.respuesta.length > 0) {
         ultima_pregunta = conversacion.pregunta[conversacion.pregunta.length - 1];
         ultima_respuesta = conversacion.respuesta[conversacion.respuesta.length - 1];
-        console.log(`📝 Última pregunta capturada: "${ultima_pregunta}"`);
-        console.log(`💬 Última respuesta capturada: "${ultima_respuesta.substring(0, 100)}..."`);
+        console.log(` Última pregunta capturada: "${ultima_pregunta}"`);
+        console.log(` Última respuesta capturada: "${ultima_respuesta.substring(0, 100)}..."`);
       }
     }
 
-    // ✅ ENVIAR CALIFICACIÓN AL BACKEND PYTHON
+    //  ENVIAR CALIFICACIÓN AL BACKEND PYTHON
     const response = await fetch(`${PYTHON_BACKEND_URL}/api/calificar-respuesta`, {
       method: 'POST',
       headers: {
@@ -261,7 +261,7 @@ export const calificarRespuesta = async (req, res) => {
         calificacion: parseInt(calificacion),
         usuario_id: usuario._id.toString(),
         rol: tipoUsuario,
-        // ✅ ENVIAR PREGUNTA Y RESPUESTA PARA PROCESAMIENTO AUTOMÁTICO
+        //  ENVIAR PREGUNTA Y RESPUESTA PARA PROCESAMIENTO AUTOMÁTICO
         pregunta_usuario: ultima_pregunta,
         respuesta_dada: ultima_respuesta
       })
@@ -274,11 +274,11 @@ export const calificarRespuesta = async (req, res) => {
     const resultado = await response.json();
 
     if (resultado.success) {
-      // ✅ VERIFICAR SI SE ENVIÓ AUTOMÁTICAMENTE AL MÓDULO DE CORRECCIÓN
-      let mensaje_respuesta = '✅ Calificación registrada exitosamente';
+      //  VERIFICAR SI SE ENVIÓ AUTOMÁTICAMENTE AL MÓDULO DE CORRECCIÓN
+      let mensaje_respuesta = 'Calificación registrada exitosamente';
       
       if (resultado.enviado_a_correccion) {
-        mensaje_respuesta = '✅ Calificación registrada. La pregunta fue enviada al módulo de corrección automáticamente.';
+        mensaje_respuesta = 'Calificación registrada. La pregunta fue enviada al módulo de corrección automáticamente.';
       }
 
       res.json({
@@ -296,7 +296,7 @@ export const calificarRespuesta = async (req, res) => {
     }
 
   } catch (error) {
-    console.error("❌ Error en calificarRespuesta:", error);
+    console.error("Error en calificarRespuesta:", error);
     res.status(500).json({ 
       error: "Error al calificar la respuesta",
       detalle: error.message 
@@ -304,7 +304,7 @@ export const calificarRespuesta = async (req, res) => {
   }
 };
 
-// ✅ ELIMINADA COMPLETAMENTE LA FUNCIÓN reportarProblema
+//  ELIMINADA COMPLETAMENTE LA FUNCIÓN reportarProblema
 
 export const historialUsuario = async (req, res) => {
   try {
@@ -366,4 +366,5 @@ export const eliminarConversacion = async (req, res) => {
     console.error("Error al eliminar conversación:", error);
     res.status(500).json({ error: "Error al eliminar conversación" });
   }
+
 };
