@@ -276,6 +276,7 @@ export const calificarRespuesta = async (req, res) => {
     if (resultado.success) {
       //  VERIFICAR SI SE ENVIÓ AUTOMÁTICAMENTE AL MÓDULO DE CORRECCIÓN
       let mensaje_respuesta = 'Calificación registrada exitosamente';
+      console.log();
       
       if (resultado.enviado_a_correccion) {
         mensaje_respuesta = 'Calificación registrada. La pregunta fue enviada al módulo de corrección automáticamente.';
@@ -368,3 +369,4 @@ export const eliminarConversacion = async (req, res) => {
   }
 
 };
+
