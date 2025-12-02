@@ -1,3 +1,4 @@
+
 import { client, lastQR, isReady } from "../config/client.js";
 import pkg from "whatsapp-web.js";
 const { MessageMedia } = pkg;
@@ -89,6 +90,15 @@ const sendMessage = async (req, res) => {
   }
 };
 
+// Endpoint para cerrar sesión de WhatsApp manualmente
+const logoutWhatsapp = async (req, res) => {
+  try {
+    await client.logout();
+    res.json({ ok: true, message: "Sesión de WhatsApp cerrada" });
+  } catch (e) {
+    res.status(500).json({ error: String(e) });
+  }
+};
 
 
 const listaMensajes = async (req, res) => {
@@ -216,4 +226,6 @@ const deleteMessage = async (req, res) => {
   }
 };
 
-export { getQR, getStatus, sendMessage, listaMensajes, sendMessageN8N, deleteMessage };
+export { getQR, getStatus, sendMessage, listaMensajes, sendMessageN8N, deleteMessage, logoutWhatsapp };
+
+
