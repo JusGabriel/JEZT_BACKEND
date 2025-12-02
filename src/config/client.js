@@ -7,7 +7,10 @@ let lastQR = null;
 let isReady = false;
 
 const client = new Client({
-  authStrategy: new LocalAuth({ clientId: "default" }),
+  authStrategy: new LocalAuth({
+    clientId: "default",
+    dataPath: "./session" // Asegura persistencia en carpeta dedicada
+  }),
   puppeteer: { headless: true, args: ["--no-sandbox", "--disable-setuid-sandbox"] }
 });
 
@@ -36,3 +39,4 @@ client.on("disconnected", (r) => {
 client.initialize();
 
 export { client, lastQR, isReady };
+
