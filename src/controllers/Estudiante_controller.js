@@ -16,6 +16,11 @@ const registro = async (req, res) => {
         if (Object.values(req.body).includes(""))
             return res.status(400).json({ msg: "Lo sentimos, debes llenar todos los campos" });
 
+        // Validar longitud mínima de la contraseña
+        if (!password || password.length < 14) {
+            return res.status(400).json({ msg: "La contraseña debe tener al menos 14 caracteres" });
+        }
+
         // Validar formato de email y dominio
         const emailLower = (email || '').toString().toLowerCase();
         if (!emailLower.endsWith('@epn.edu.ec')) {
@@ -482,4 +487,5 @@ export {
     actualizarImagenPerfil, 
     detalleEstudiante,
     listarEstudiantes
+
 }
